@@ -19,29 +19,31 @@ model_loader = ModelLoader()
 @app.route("/")
 def index():
     return "Enter in your console: curl -F 'file=@%s' " % "&lt;local image path&gt;" + \
-           "%s:%s/predict" % (socket.gethostbyname(socket.gethostname()), conf_constants.port)
+           "%s:%s/predict" % ("&lt;app host ip&gt;", conf_constants.port)  # socket.gethostbyname(socket.gethostname())
 
 
 @app.route("/predict", methods=["GET", "POST"])
 def predict():  # This method should be tested automaticaly but from separate test system
     if request.method == 'POST':
-        return _predict(request.files['file'])
+        f = request.files['file']
+        f_path = os.path.join(conf_constants.upload_folder, str(int(time.time()))+"_"+os.path.basename(f.filename))
+        f.save(f_path)
+        return _predict(f_path)
 
 
-def _predict(f):  # TODO: write unittest for this function
-    f_path = os.path.join(conf_constants.upload_folder, str(int(time.time()))+"_"+os.path.basename(f.filename))
-    f.save(f_path)
+def _predict(f_path, **kwargs):
     # img_matrix = cv2.cvtColor(cv2.imread(f_path), cv2.COLOR_BGR2RGB)
     img_matrix = np.array([np.ravel(cv2.cvtColor(cv2.imread(f_path), cv2.COLOR_BGR2GRAY))]).astype(np.float64)
     img_tensor = torch.from_numpy(img_matrix)
     model = model_loader.model
     result = model.predict(img_tensor)[0]
     result_json = json.dumps(result.tolist(), indent=2)  # output can be the dict of digit logs
-    os.remove(f_path)  # can be moved to a storage if needed
+    if not kwargs.get("debug", False):
+        os.remove(f_path)  # can be moved to a storage if needed
     return result_json
 
 
-def run(port=None, model_path=None, nthreads=None, device=None, upload_folder=None, config_path=None):
+def run(port=None, model_path=None, nthreads=None, device=None, upload_folder=None, config_path=None, **kwargs):
     if config_path is not None:
         conf_constants.update_by_config(config_path)
         

@@ -1,3 +1,5 @@
 venv/
 *__pycache__/
-uploads/
+mnist_app/uploads/
+*.dimg
+*.gz
