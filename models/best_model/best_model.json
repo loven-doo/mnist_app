@@ -1,0 +1,7 @@
+{
+  "model_wrapper": "BestModelWrapper",
+  "model_path": "mnist_app/models/best_model/best_model.json",
+  "weights_path": "mnist_app/models/best_model/weights-5-best.model",
+  "params": {
+  }
+}
