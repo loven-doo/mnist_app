@@ -1,6 +1,6 @@
 ## APP Start
 ### From Docker image
-NOTE, if you are planning to use GPU (NVIDIA) install nvidia-docker2 and check if graphics driver is installed on the target machine. If you are not planning - user simple 'docker' instead of 'nvidia-docker'   
+NOTE, if you are planning to use GPU (NVIDIA) install nvidia-docker2 and check if graphics driver is installed on the target machine. If you are not planning - use simple 'docker' instead of 'nvidia-docker'   
 
 Dowload and extract the Docker [image](https://drive.google.com/open?id=1tWu9vLMsKPbfpz_u2FmCLCI9CdAZ1Pjn) to the target machine   
 Load the image on the target machine:
