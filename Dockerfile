@@ -12,6 +12,6 @@ run apt-get update && apt-get install -y \
 
 run ln -s /usr/bin/python3.6 /usr/bin/python        
 
-RUN python -m pip install -r requirements.txt
+RUN python3.6 -m pip install -r requirements.txt
 
 
